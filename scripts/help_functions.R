@@ -52,24 +52,44 @@ missing_package <- function(...) {
 #'rename the column name with metadata
 #'
 #' @noRd
+# rename_columns <- function(df, metadata) {
+#   # Loop through each column name in the dataframe
+#   for (i in 1:dim(metadata)[1]) {
+#     col = metadata$Channel.name[i]
+#     idx = grep(col, colnames(df))
+#     col
+#     idx
+#     matching_channel <- metadata$Channel.name[grepl( col, metadata$Channel.name)]
+#     matching_channel
+#     if (length(idx) > 0) {
+#       # Get the corresponding marker
+#       marker <- metadata$markers[metadata$Channel.name == matching_channel]
+#       # Rename the column with the marker
+#       colnames(df)[idx] <- marker
+#     } else {stop(paste(sep = " ", i,idx,col,"\n", "colnames of data/ and ORIGINAL MARKERS.csv are not matched"))}
+#   }
+#   return(df)
+# }
+
 rename_columns <- function(df, metadata) {
   # Loop through each column name in the dataframe
   for (i in 1:dim(metadata)[1]) {
-    col = metadata$Channel.name[i]
+    col = metadata[i,1]
     idx = grep(col, colnames(df))
     col
     idx
-    matching_channel <- metadata$Channel.name[grepl( col, metadata$Channel.name)]
+    matching_channel <- metadata[grepl( col, metadata[,1]),1]
     matching_channel
     if (length(idx) > 0) {
       # Get the corresponding marker
-      marker <- metadata$markers[metadata$Channel.name == matching_channel]
+      marker <- metadata[metadata[,1] == matching_channel,2]
       # Rename the column with the marker
       colnames(df)[idx] <- marker
     } else {stop(paste(sep = " ", i,idx,col,"\n", "colnames of data/ and ORIGINAL MARKERS.csv are not matched"))}
   }
   return(df)
 }
+
 
 read.cytofFiles <- function (file.loc = getwd(), file.type = ".csv", nrows = NULL, 
                              do.embed.file.names = TRUE, header = TRUE) 
