@@ -8,3 +8,6 @@ output/
 *.png
 *.pdf
 *.tsv
+*.txt
+data/
+metadata/
