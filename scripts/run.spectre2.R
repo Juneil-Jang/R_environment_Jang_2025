@@ -40,6 +40,7 @@ run.spectre2 <- function (phenok,
   ### Set output directory
   Output1Directory <- file.path(PrimaryDirectory, "Output 1 - data prep")
   Output2Directory <- file.path(PrimaryDirectory, "Output 2 - batch alignment")
+  Output2.2Directory <- file.path(Output2Directory, "Output 2.2 - fine alignment")
   Output3Directory <- file.path(PrimaryDirectory, "Output 3 - clustering and DR_fastPG")
   
   ### Import data
@@ -339,7 +340,7 @@ run.spectre2 <- function (phenok,
     setwd(Output2.2Directory)
     setwd("D - Fine aligned data")
     cell.dat = read.table("cell.dat_allAligned.csv", sep = ",", header = T) 
-    
+    cell.dat = cell.dat %>% as.data.table()
     message("reload from previous data")
   }
   
@@ -382,7 +383,7 @@ run.spectre2 <- function (phenok,
   
   ### Run DR
   cell.sub <- cell.dat
-  cell.sub <- run.umap(cell.sub, clustering.cols)
+  cell.sub <- run.umap(cell.sub, use.cols = clustering.cols)
   
   fwrite(cell.sub, "RD.sub.csv")
   message("Dimension reduction completed. Plotting next.")
